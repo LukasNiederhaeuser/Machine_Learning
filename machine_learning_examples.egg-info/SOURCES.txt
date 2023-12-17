@@ -1,0 +1,14 @@
+README.md
+setup.py
+machine_learning_examples.egg-info/PKG-INFO
+machine_learning_examples.egg-info/SOURCES.txt
+machine_learning_examples.egg-info/dependency_links.txt
+machine_learning_examples.egg-info/top_level.txt
+src/__init__.py
+src/california_housing/__init__.py
+src/california_housing/impute_data.py
+src/california_housing/main.py
+src/california_housing/outlier_removal.py
+src/california_housing/preprocess_train.py
+src/california_housing/read_data.py
+src/california_housing/store_data.py

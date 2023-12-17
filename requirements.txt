@@ -1,0 +1,10 @@
+# local package
+-e .
+
+# external packages
+jupyter
+pandas
+matplotlib
+seaborn
+scikit-learn
+statsmodels
