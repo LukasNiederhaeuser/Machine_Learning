@@ -2,12 +2,11 @@ import os
 import pandas as pd
 import numpy as np
 
-from src.california_housing import read_data
 from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline, FeatureUnion
+from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import OneHotEncoder, StandardScaler, MinMaxScaler
-
+from sklearn.model_selection import GridSearchCV, KFold
 
 def data_preprocessing(data):
     
@@ -48,41 +47,27 @@ def data_preprocessing(data):
 
 
 def train_linear_regression(X, y):
-    
-    # Define Model
+
+    # Define Linear Regression model
     lin_reg = LinearRegression()
-    lin_reg_pipeline = Pipeline(steps=[
-        ('model', lin_reg)
-    ])
 
-    # Fit the model
-    lin_reg_pipeline.fit(X, y)
+    # Define the parameter grid for grid search
+    param_grid = {
+        'fit_intercept': [True, False],
+        'positive': [True, False]
+        }
 
-    return lin_reg_pipeline
+    # Create 5-fold cross-validation object
+    cv = KFold(n_splits=5, shuffle=True, random_state=42)
 
+    # Perform GridSearchCV
+    grid_search = GridSearchCV(estimator=lin_reg, param_grid=param_grid, scoring='neg_mean_squared_error', cv=cv, n_jobs=-1)
+    grid_search.fit(X, y)
 
-def main():
+    # Print the best parameters from grid search
+    print("Best Parameters: ", grid_search.best_params_)
 
-    # Read train and test data
-    df_train = read_data.read_file(folder="california_housing",filename="strat_train_set_adjusted", csv=True)
-    df_test = read_data.read_file(folder="california_housing",filename="strat_test_set_adjusted", csv=True)
+    # Get the best model from the grid search
+    best_model = grid_search.best_estimator_
 
-    # Create train variables
-    X_train = data_preprocessing(df_train)
-    y_train = df_train[['median_house_value']]
-
-    # Scikit Learn Linear Regression
-    lin_reg_model = train_linear_regression(X_train, y_train)
-
-    # Preprocess test data using the same transformations
-    X_test = data_preprocessing(df_test)
-    y_test = df_test[['median_house_value']]
-
-    # Predict using the trained model
-    y_pred = lin_reg_model.predict(X_test)
-
-    return y_test, y_pred, lin_reg_model
-
-
-if __name__ == '__main__':
-    main()
+    return best_model

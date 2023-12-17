@@ -4,6 +4,7 @@ from src.california_housing import read_data
 from src.california_housing import store_data
 from src.california_housing import impute_data
 from src.california_housing import outlier_removal
+from src.california_housing import preprocess_train
 
 # Processed folder
 FOLDER_PROCESSED = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "data", "processed", "california_housing")
@@ -67,3 +68,15 @@ def test_process():
         print(f"Stratified processed test set saved to: {test_set_path}")
     except Exception as e:
         print(f"An error occurred while saving the adjusted test-data: {e}")
+
+
+def main():
+
+    training_process()
+    test_process()
+
+
+if __name__ == '__main__':
+    main()
+
+
