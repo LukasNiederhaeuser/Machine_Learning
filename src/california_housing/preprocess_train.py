@@ -4,7 +4,7 @@ import numpy as np
 
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor 
 from sklearn.preprocessing import OneHotEncoder, StandardScaler, MinMaxScaler
 from sklearn.model_selection import GridSearchCV, KFold
 
@@ -46,22 +46,26 @@ def data_preprocessing(data):
     return col_trans.fit_transform(data_copy)
 
 
-def train_linear_regression(X, y):
+def train_random_forest_regressor(X, y):
 
     # Define Linear Regression model
-    lin_reg = LinearRegression()
+    forest_reg = RandomForestRegressor()
 
     # Define the parameter grid for grid search
-    param_grid = {
-        'fit_intercept': [True, False],
-        'positive': [True, False]
-        }
+    param_grid = [
+        {'n_estimators': [3, 10, 30], 'max_features': [2, 4, 6, 8]},
+        {'bootstrap': [False], 'n_estimators': [3, 10], 'max_features': [2, 3, 4]},
+        ]
 
     # Create 5-fold cross-validation object
     cv = KFold(n_splits=5, shuffle=True, random_state=42)
 
     # Perform GridSearchCV
-    grid_search = GridSearchCV(estimator=lin_reg, param_grid=param_grid, scoring='neg_mean_squared_error', cv=cv, n_jobs=-1)
+    grid_search = GridSearchCV(estimator=forest_reg,
+                               param_grid=param_grid,
+                               scoring='neg_mean_squared_error',
+                               cv=cv,
+                               return_train_score=True)
     grid_search.fit(X, y)
 
     # Print the best parameters from grid search
