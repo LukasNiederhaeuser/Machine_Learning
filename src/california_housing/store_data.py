@@ -66,11 +66,10 @@ def store_data(strat_train_set, strat_test_set):
         strat_train_set.to_csv(train_set_path, index=False)
         strat_test_set.to_csv(test_set_path, index=False)
 
-        print(f"Stratified train set saved to: {train_set_path}")
-        print(f"Stratified test set saved to: {test_set_path}")
+        print(f"Step 1 of 8: Successfully executed - stratified train and test set saved to: {train_set_path}")
 
     except Exception as e:
-        print(f"An error occurred while saving the data: {e}")
+        print(f"Step 1 of 8: An error occurred while saving the data: {e}")
 
 
 def main():

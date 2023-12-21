@@ -63,9 +63,9 @@ def isolation_forest(data, anomaly_columns, percentage_outliers, save_model=Fals
     if save_model:
         try:
             joblib.dump(model_IF, save_model_path)
-            print("Isolation-Forest model saved successfully")
+            print("Step 3 of 8: Successfully executed - Isolation-Forest model saved successfully")
         except Exception as e:
-            print(f"An error occurred while saving the model: {e}")
+            print(f"Step 3 of 8: An error occurred while saving the model: {e}")
 
     # Keep observations not considered outlier and drop columns
     data = data[data["anomaly"] == 1]
